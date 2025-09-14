@@ -3,7 +3,7 @@ import re
 from models.conversation import Conversation
 from models.projeto_template import ProjetoTemplate
 from services.pricing_service import PricingService
-from app import db
+from extensions import db
 
 class ChatService:
     def __init__(self):
@@ -259,3 +259,28 @@ class ChatService:
         required_fields = base_requirements + specific_requirements
         
         return all(requirements.get(field) for field in required_fields)
+
+    def _format_quote_message(self, quote):
+        """Formata mensagem do orçamento para o chat"""
+        return f"""
+Perfeito! Aqui está seu orçamento personalizado:
+
+📊 **{quote['project_name']}**
+💰 **Valor Total**: R$ {quote['total_cost']:,.2f}
+⏱️ **Prazo**: {quote['timeline_weeks']} semanas
+📈 **Complexidade**: {quote['complexity'].title()}
+📍 **Região**: {quote['region']}
+
+**Breakdown de Horas:**
+• Design: {quote['hours_breakdown']['design']}h
+• Frontend: {quote['hours_breakdown']['frontend']}h  
+• Backend: {quote['hours_breakdown']['backend']}h
+• Testes: {quote['hours_breakdown']['testing']}h
+• Gerenciamento: {quote['hours_breakdown']['pm']}h
+
+**Total**: {quote['total_hours']} horas × R$ {quote['hourly_rate']}/h
+
+O orçamento inclui {len(quote['features'])} funcionalidades principais e foi calculado com base em dados reais do mercado brasileiro.
+
+Gostaria de ver o detalhamento completo ou fazer algum ajuste?
+"""

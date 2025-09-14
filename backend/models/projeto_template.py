@@ -1,4 +1,4 @@
-from app import db, ma
+from extensions import db, ma
 import json
 
 class ProjetoTemplate(db.Model):

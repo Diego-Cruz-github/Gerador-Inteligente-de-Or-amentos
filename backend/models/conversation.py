@@ -1,4 +1,4 @@
-from app import db, ma
+from extensions import db, ma
 from datetime import datetime
 import json
 
@@ -14,8 +14,7 @@ class Conversation(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
-    # Relacionamentos
-    orcamento = db.relationship('Orcamento', backref='conversation', uselist=False)
+    # Relacionamentos serão definidos após importação de todos os modelos
     
     def add_message(self, role, content):
         messages = json.loads(self.messages) if self.messages else []
