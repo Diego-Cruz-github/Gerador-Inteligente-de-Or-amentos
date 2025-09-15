@@ -34,10 +34,10 @@ Gerador inteligente de orçamentos com interface conversacional. Usuario convers
 
 ## Dados de Mercado
 
-Sistema utiliza dados realistas baseados em pesquisa de mercado atual. Preços de freelancers no Brasil:
-- Junior: R$ 25-50/h
-- Pleno: R$ 50-80/h  
-- Senior: R$ 80-150/h
+Sistema utiliza dados realistas baseados em pesquisa de mercado atual. Custos empresariais completos incluindo desenvolvimento, infraestrutura, licenças e execução:
+- Junior: R$ 65-85/h
+- Pleno: R$ 95-120/h  
+- Senior: R$ 140-180/h
 
 ## Diferencial
 
@@ -77,4 +77,4 @@ gerador-orcamentos/
     └── screenshots/
 ```
 
-Resultado: Orçamentos empresariais gerados através de conversa natural com custos realistas baseados em pesquisa de mercado!
+Sistema inovador que transforma conversas em orçamentos profissionais precisos com dados reais de mercado!

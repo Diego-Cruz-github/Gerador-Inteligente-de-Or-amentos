@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste Markdown</title>
+    <style>
+        .test-container {
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .original {
+            background: #f5f5f5;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .formatted {
+            background: #e8f5e8;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        strong {
+            color: #1d4ed8;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h2>Teste de Formatação Markdown</h2>
+        
+        <div class="original">
+            <strong>Original:</strong>
+            <div id="original"></div>
+        </div>
+        
+        <div class="formatted">
+            <strong>Formatado:</strong>
+            <div id="formatted"></div>
+        </div>
+        
+        <button onclick="test()">Testar Formatação</button>
+    </div>
+
+    <script>
+        function formatMessage(content) {
+            if (!content) return ''
+            
+            console.log('Original content:', content)
+            
+            let formatted = content
+                // Negrito ***texto*** (3 asteriscos primeiro)
+                .replace(/\*\*\*(.*?)\*\*\*/g, '<strong class="font-semibold text-blue-600">$1</strong>')
+                // Negrito **texto** (2 asteriscos)
+                .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-blue-600">$1</strong>')
+                // Processar listas com bullet points
+                .replace(/^•\s*(.+)$/gm, '<div class="flex items-start gap-2 my-1"><span class="text-blue-500 font-medium">•</span><span>$1</span></div>')
+                // Bullet points soltos
+                .replace(/•/g, '<span class="text-blue-500 font-medium">•</span>')
+                // Quebras de linha duplas
+                .replace(/\n\n/g, '<br><br>')
+                // Quebras de linha simples
+                .replace(/\n/g, '<br>')
+            
+            console.log('Formatted content:', formatted)
+            return formatted
+        }
+
+        function test() {
+            const testContent = `Olá! 👋 
+
+**Bem-vindo ao Gerador Inteligente de Orçamentos**! 
+
+**Para calcular o orçamento**, preciso saber:
+• Quantos usuários você espera?
+• Vai funcionar offline?
+
+🚀 **Próximo passo**: Me conte sobre essas funcionalidades!`
+
+            document.getElementById('original').textContent = testContent
+            document.getElementById('formatted').innerHTML = formatMessage(testContent)
+        }
+
+        // Teste automático
+        test()
+    </script>
+</body>
+</html>

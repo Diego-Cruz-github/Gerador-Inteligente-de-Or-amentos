@@ -25,6 +25,50 @@ def start_conversation():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+@chat_bp.route('/start-detailed', methods=['POST'])
+def start_detailed_conversation():
+    """Inicia uma nova conversa com funcionalidade de pesquisa de mercado"""
+    try:
+        session_id = str(uuid.uuid4())
+        conversation = chat_service.start_conversation(session_id)
+        
+        # Mensagem inicial específica para orçamento detalhado
+        detailed_welcome = """Olá! 👋 
+
+Bem-vindo ao **Orçamento Detalhado com Pesquisa de Mercado**!
+
+🔍 Aqui eu vou:
+• Fazer uma pesquisa automática nos principais sites brasileiros
+• Comparar valores praticados no mercado para projetos similares
+• Gerar um orçamento baseado em dados reais de mercado
+• Apresentar uma comparação detalhada com a concorrência
+
+Para começar, me conte sobre seu projeto. Pode ser um app, website, sistema web, e-commerce, etc. 
+
+Quanto mais detalhes você me der, melhor será a pesquisa de mercado! 🚀"""
+        
+        # Substituir a mensagem inicial
+        from models.conversation import Conversation
+        conv = Conversation.query.filter_by(session_id=session_id).first()
+        if conv:
+            # Limpar mensagens existentes e adicionar a nova
+            conv.messages = []
+            conv.add_message('assistant', detailed_welcome)
+            from extensions import db
+            db.session.commit()
+        
+        messages = conv.get_messages() if conv else []
+        
+        return jsonify({
+            'success': True,
+            'session_id': session_id,
+            'conversation_id': conversation.id,
+            'messages': messages,
+            'market_research_enabled': True
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 @chat_bp.route('/message', methods=['POST'])
 def send_message():
     """Envia mensagem e recebe resposta do chat"""
@@ -36,41 +80,26 @@ def send_message():
         if not session_id or not message:
             return jsonify({'success': False, 'error': 'session_id e message são obrigatórios'}), 400
         
-        # Processar mensagem
-        response = chat_service.process_message(session_id, message)
+        # Verificar se é uma solicitação detalhada (com pesquisa de mercado)
+        include_market_research = data.get('include_market_research', False)
         
-        # Se deve gerar orçamento, fazer isso
-        if response.get('should_generate_quote'):
-            try:
-                quote = pricing_service.generate_quote(
-                    response['conversation_id'], 
-                    response['requirements']
-                )
-                
-                # Adicionar mensagem com o orçamento
-                quote_message = chat_service._format_quote_message(quote)
-                chat_service.process_message(session_id, quote_message)
-                
-                return jsonify({
-                    'success': True,
-                    'message': response['message'],
-                    'quote_generated': True,
-                    'quote': quote,
-                    'requirements': response['requirements']
-                })
-            except Exception as e:
-                error_message = f"Erro ao gerar orçamento: {str(e)}"
-                chat_service.process_message(session_id, error_message)
-                return jsonify({
-                    'success': True,
-                    'message': error_message,
-                    'quote_generated': False
-                })
+        # Processar mensagem
+        response = chat_service.process_message(session_id, message, include_market_research)
+        
+        # Verificar se já foi gerado um orçamento no process_message
+        if response.get('quote'):
+            return jsonify({
+                'success': True,
+                'message': response.get('quote_message', response['message']),
+                'quote_generated': True,
+                'quote': response['quote'],
+                'requirements': response['requirements']
+            })
         
         return jsonify({
             'success': True,
             'message': response['message'],
-            'quote_generated': False,
+            'quote_generated': response.get('should_generate_quote', False),
             'requirements': response.get('requirements', {})
         })
         

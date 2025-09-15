@@ -3,11 +3,13 @@ import re
 from models.conversation import Conversation
 from models.projeto_template import ProjetoTemplate
 from services.pricing_service import PricingService
+from services.ai_service import AIService
 from extensions import db
 
 class ChatService:
     def __init__(self):
         self.pricing_service = PricingService()
+        self.ai_service = AIService()
         
         # Templates de perguntas por categoria
         self.question_templates = {
@@ -52,18 +54,15 @@ class ChatService:
         db.session.add(conversation)
         db.session.commit()
         
-        welcome_message = (
-            "Olá! Sou seu consultor especializado em orçamentos de tecnologia. "
-            "Vou te fazer algumas perguntas para criar um orçamento preciso e detalhado. "
-            "Para começar, me conte: que tipo de projeto você tem em mente?"
-        )
+        # Gera mensagem de boas-vindas usando IA
+        welcome_message = self.ai_service.generate_welcome_message()
         
         conversation.add_message('assistant', welcome_message)
         db.session.commit()
         
         return conversation
 
-    def process_message(self, session_id, user_message):
+    def process_message(self, session_id, user_message, include_market_research=False):
         """Processa mensagem do usuário e gera resposta"""
         conversation = Conversation.query.filter_by(session_id=session_id).first()
         
@@ -77,23 +76,74 @@ class ChatService:
         messages = conversation.get_messages()
         requirements = conversation.get_requirements()
         
-        # Determina próxima pergunta ou gera orçamento
-        response = self._generate_response(conversation, user_message, messages, requirements)
+        # Gera resposta usando IA do Groq
+        ai_response = self.ai_service.generate_response(messages, user_message)
         
         # Adiciona resposta do assistente
-        conversation.add_message('assistant', response['message'])
+        conversation.add_message('assistant', ai_response['response'])
         
-        # Atualiza requisitos se necessário
-        if response.get('requirements_update'):
-            requirements.update(response['requirements_update'])
+        # Se deve gerar orçamento, extrai informações usando IA
+        should_generate_quote = ai_response['should_generate_quote']
+        if should_generate_quote:
+            # Extrai informações do projeto usando IA
+            extracted_info = self.ai_service.extract_project_info(messages)
+            
+            # Garantir informações mínimas necessárias
+            if not extracted_info.get('project_type'):
+                # Tenta identificar pelo contexto das mensagens
+                conversation_text = ' '.join([msg['content'].lower() for msg in messages if msg['role'] == 'user'])
+                if any(word in conversation_text for word in ['app', 'aplicativo', 'mobile']):
+                    extracted_info['project_type'] = 'app'
+                elif any(word in conversation_text for word in ['site', 'website', 'landing']):
+                    extracted_info['project_type'] = 'website'  
+                elif any(word in conversation_text for word in ['sistema', 'erp', 'crm']):
+                    extracted_info['project_type'] = 'sistema'
+                else:
+                    extracted_info['project_type'] = 'app'  # fallback
+            
+            if not extracted_info.get('complexity'):
+                extracted_info['complexity'] = 'media'
+                
+            if not extracted_info.get('region'):
+                extracted_info['region'] = 'interior'
+            
+            requirements.update(extracted_info)
             conversation.set_requirements(requirements)
+            
+            # Se deve gerar orçamento, fazê-lo agora
+            if should_generate_quote:
+                try:
+                    quote = self.pricing_service.generate_quote(
+                        conversation.id, 
+                        requirements, 
+                        include_market_research=include_market_research
+                    )
+                    
+                    # Formatar mensagem do orçamento
+                    quote_message = self._format_quote_message(quote, include_market_research)
+                    conversation.add_message('assistant', quote_message)
+                    
+                    db.session.commit()
+                    
+                    return {
+                        'message': ai_response['response'],
+                        'conversation_id': conversation.id,
+                        'should_generate_quote': True,
+                        'requirements': requirements,
+                        'quote': quote,
+                        'quote_message': quote_message
+                    }
+                except Exception as e:
+                    print(f"Erro ao gerar orçamento: {e}")
+                    error_message = "Desculpe, houve um erro ao gerar seu orçamento. Pode tentar novamente ou reformular sua solicitação?"
+                    conversation.add_message('assistant', error_message)
         
         db.session.commit()
         
         return {
-            'message': response['message'],
+            'message': ai_response['response'],
             'conversation_id': conversation.id,
-            'should_generate_quote': response.get('should_generate_quote', False),
+            'should_generate_quote': should_generate_quote,
             'requirements': requirements
         }
 
@@ -260,9 +310,10 @@ class ChatService:
         
         return all(requirements.get(field) for field in required_fields)
 
-    def _format_quote_message(self, quote):
+    def _format_quote_message(self, quote, include_market_research=False):
         """Formata mensagem do orçamento para o chat"""
-        return f"""
+        
+        base_message = f"""
 Perfeito! Aqui está seu orçamento personalizado:
 
 📊 **{quote['project_name']}**
@@ -280,7 +331,12 @@ Perfeito! Aqui está seu orçamento personalizado:
 
 **Total**: {quote['total_hours']} horas × R$ {quote['hourly_rate']}/h
 
-O orçamento inclui {len(quote['features'])} funcionalidades principais e foi calculado com base em dados reais do mercado brasileiro.
+O orçamento inclui {len(quote['features'])} funcionalidades principais e foi calculado com base em dados reais do mercado brasileiro."""
 
-Gostaria de ver o detalhamento completo ou fazer algum ajuste?
-"""
+        # Adicionar pesquisa de mercado se disponível
+        if include_market_research and quote.get('market_research'):
+            base_message += f"\n\n{quote['market_research']}"
+        
+        base_message += "\n\nGostaria de ver o detalhamento completo ou fazer algum ajuste?"
+        
+        return base_message
