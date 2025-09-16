@@ -25,29 +25,39 @@ Este é um **projeto DEMO** que demonstra as possibilidades de sistemas conversa
 
 Sistema inovador que transforma conversas em orçamentos profissionais precisos. O usuário conversa com IA e recebe estimativas detalhadas em tempo real, simulando uma consultoria real.
 
-## 📸 Screenshots
+## 🎬 Demonstrações
 
-<div align="center">
+<details open>
+<summary><strong>⚡ Sistema de Orçamentos</strong> <em>(demonstração)</em></summary>
 
-### Funcionalidades
-![Funcionalidades](Screenshots%20e%20vídeos/funcionalidades.gif)
-
-### Funcionalidades 2
-![Funcionalidades 2](Screenshots%20e%20vídeos/Funcionalidades2.gif)
-
-### Orçamento Rápido
 ![Orçamento Rápido](Screenshots%20e%20vídeos/Orçamento-Rápido.gif)
-
-### Orçamento Detalhado
 ![Orçamento Detalhado](Screenshots%20e%20vídeos/OrçamentoDetalhado.gif)
 
-### Integração com Power BI
-![Integração com Power BI](Screenshots%20e%20vídeos/integração-com-powerbi.gif)
+</details>
 
-### Integração Data Studio (Google)
+<details>
+<summary><strong>🚀 Funcionalidades Principais</strong> <em>(clique aqui para ver demonstração)</em></summary>
+
+![Funcionalidades](Screenshots%20e%20vídeos/funcionalidades.gif)
+![Funcionalidades 2](Screenshots%20e%20vídeos/Funcionalidades2.gif)
+
+</details>
+
+<details>
+<summary><strong>📊 Integração BI</strong> <em>(clique aqui para ver demonstração)</em></summary>
+
+![Integração com Power BI](Screenshots%20e%20vídeos/integração-com-powerbi.gif)
 ![Integração Data Studio Google](Screenshots%20e%20vídeos/IntegraçãoDataStudioGoogle.gif)
 
-</div>
+</details>
+
+## 👨‍💻 Autor
+
+**Diego Fonte** - Desenvolvedor Full Stack | Consultor de Cyber Segurança e IA
+
+- 🌐 Website: [www.diegofontedev.com.br](https://www.diegofontedev.com.br)
+- 🏢 Empresa: [www.zowti.com](https://www.zowti.com)
+- 📧 Email: contato@diegofontedev.com.br
 
 ## 🔥 Novas Funcionalidades Disponíveis
 
@@ -76,7 +86,9 @@ Sistema inovador que transforma conversas em orçamentos profissionais precisos.
 - **IA**: OpenAI GPT + Processamento de Linguagem Natural
 - **BI**: Power BI + Google Data Studio + API Analytics
 - **PDF**: jsPDF + Relatórios automatizados
-- **Deploy**: Docker Ready + Ambiente de desenvolvimento
+- **Deploy**: Docker + Docker Compose + Nginx
+- **Containerização**: Multi-stage builds otimizados para produção
+- **Database**: SQLite (dev) / PostgreSQL (produção)
 
 ## 🎨 Totalmente Personalizável
 
@@ -97,30 +109,7 @@ const themeConfig = {
 - **Consultoria Jurídica**: Honorários advocatícios
 - **E muito mais...** - adapte a lógica para qualquer área!
 
-## 🎨 Frontend 100% Personalizável
-
-### 🎯 Elementos Editáveis
-- **Cores e Tema**: TailwindCSS configurável
-- **Textos e Labels**: Todos centralizados em arquivos config
-- **Logos e Imagens**: Pasta public/ para assets personalizados
-- **Layout**: Componentes Vue modulares
-- **Funcionalidades**: Adicione/remova páginas facilmente
-
-### 🔧 Como Personalizar
-```javascript
-// frontend/src/style.css - Modifique cores
-:root {
-  --primary-color: #667eea;
-  --secondary-color: #f093fb;
-}
-
-// frontend/src/App.vue - Modifique layout
-const appConfig = {
-  companyName: 'Sua Empresa',
-  logo: '/assets/seu-logo.png',
-  theme: 'custom'
-}
-```
+## 🎨 Sistema Totalmente Personalizável
 
 ### 🔧 Exemplos de Adaptação para Outros Negócios
 - **Consultoria Financeira**: Orçamentos de investimentos e planejamento
@@ -132,21 +121,68 @@ const appConfig = {
 
 ## 🚀 Instalação Rápida
 
-### Backend
+### 🐳 Instalação com Docker (Recomendado)
+
+#### Pré-requisitos
+- Docker e Docker Compose instalados
+- Chave da API OpenAI
+
+#### 1. Clone e Configure
+```bash
+git clone https://github.com/seu-usuario/gerador-orcamentos.git
+cd gerador-orcamentos
+
+# Configure suas variáveis de ambiente
+cp .env.example .env
+# Edite o .env e adicione sua OPENAI_API_KEY
+```
+
+#### 2. Execute com Docker
+```bash
+# Desenvolvimento (com hot reload)
+docker-compose -f docker-compose.dev.yml up --build
+
+# Produção
+docker-compose up --build -d
+
+# Com PostgreSQL (produção completa)
+docker-compose --profile production up --build -d
+```
+
+#### 3. Acesso
+- **Frontend**: http://localhost:3000 (produção) ou http://localhost:3001 (dev)
+- **API**: http://localhost:5000
+- **BI Integration**: http://localhost:3000/bi-integration
+
+#### 4. Comandos Úteis
+```bash
+# Ver logs
+docker-compose logs -f
+
+# Parar containers
+docker-compose down
+
+# Rebuild completo
+docker-compose down && docker-compose up --build
+```
+
+### 📋 Instalação Manual (Alternativa)
+
+#### Backend
 ```bash
 cd backend
 pip install -r requirements.txt
 python app.py
 ```
 
-### Frontend  
+#### Frontend  
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-### Acesso
+#### Acesso Manual
 - **Frontend**: http://localhost:3000
 - **API**: http://localhost:5000
 - **BI Integration**: http://localhost:3000/bi-integration
@@ -175,16 +211,60 @@ gerador-orcamentos/
 
 ## 🌟 Como Usar
 
-1. **Clone o repositório**
-2. **Instale as dependências** (backend e frontend)
-3. **Configure sua API OpenAI** no backend
-4. **Execute ambos servidores**
-5. **Acesse http://localhost:3000**
-6. **Experimente as funcionalidades**:
-   - Chat conversacional para orçamentos
-   - Orçamento rápido via formulário
-   - Dashboard com métricas em tempo real
-   - Integração BI com Power BI/Data Studio
+### 🎯 Acesso Rápido às Funcionalidades
+
+1. **🚀 Página Principal** - `http://localhost:3000`
+   - Dashboard com visão geral de todos os orçamentos
+   - Estatísticas em tempo real de conversão
+   - Acesso rápido a todas as funcionalidades
+
+2. **💬 Chat Conversacional** - `http://localhost:3000/chat`
+   - Sistema de IA que coleta requisitos via conversa natural
+   - Geração automática de orçamentos baseados na conversa
+   - Histórico completo de interações
+
+3. **⚡ Orçamento Rápido** - `http://localhost:3000/app`
+   - Formulário inteligente para orçamentos express
+   - Validação em tempo real e sugestões automáticas
+   - Geração instantânea de estimativas
+
+4. **🔍 Orçamento Detalhado** - `http://localhost:3000/detailed-app`
+   - Análise completa com pesquisa de mercado automática
+   - Comparação com concorrência em tempo real
+   - Relatórios profissionais em PDF
+
+5. **📊 BI Integration** - `http://localhost:3000/bi-integration`
+   - Dashboards interativos Power BI e Google Data Studio
+   - Métricas em tempo real de performance
+   - Exportação de dados para ferramentas corporativas
+
+6. **🔧 API Endpoints** - `http://localhost:5000/api`
+   - `/api/chat` - Conversação com IA
+   - `/api/quotes` - Gestão de orçamentos
+   - `/api/analytics` - Dados para BI
+   - `/api/dashboard` - Estatísticas gerais
+
+### 🛠️ Configuração Técnica
+
+1. **Configure Variáveis de Ambiente**:
+   ```bash
+   # Backend (.env)
+   OPENAI_API_KEY=sua_chave_aqui
+   FLASK_ENV=development
+   
+   # Frontend (opcional)
+   VITE_API_URL=http://localhost:5000
+   ```
+
+2. **Primeira Execução**:
+   - O banco SQLite é criado automaticamente
+   - As tabelas são inicializadas no primeiro acesso
+   - Dados de exemplo são populados para demonstração
+
+3. **Personalização Rápida**:
+   - Modifique cores em `frontend/src/style.css`
+   - Adapte textos em `frontend/src/views/`
+   - Configure preços em `backend/services/pricing_service.py`
 
 ## 🔐 Segurança
 
@@ -203,18 +283,28 @@ gerador-orcamentos/
 - Mantenha dependências atualizadas
 - Configure backup automático do banco
 
-## 📝 Roadmap
+## 📝 Roadmap do Projeto
 
-- [ ] Sistema de autenticação e usuários
-- [ ] Dashboard administrativo avançado
-- [ ] Integração com mais APIs de IA
-- [ ] Sistema de templates personalizáveis
-- [ ] Exportação para Excel/CSV
-- [ ] Webhooks para integrações
-- [ ] App mobile (React Native)
-- [ ] Sistema de notificações
-- [ ] Multi-idiomas (i18n)
-- [ ] Deploy automatizado (Docker + CI/CD)
+### 🚀 Próximas Funcionalidades
+- [ ] **Sistema de Clientes**: Gestão completa de leads e conversões
+- [ ] **Templates de Orçamento**: Modelos personalizáveis por tipo de projeto
+- [ ] **Assinatura Digital**: Aprovação eletrônica de orçamentos
+- [ ] **CRM Integrado**: Funil de vendas completo
+- [ ] **Relatórios Avançados**: Analytics de performance e ROI
+
+### 🔧 Melhorias Técnicas
+- [ ] **Autenticação JWT**: Sistema completo de usuários e permissões
+- [ ] **Banco PostgreSQL**: Migração completa para produção
+- [ ] **Cache Redis**: Otimização de performance para consultas BI
+- [ ] **Webhooks**: Integração automática com sistemas externos
+- [ ] **API Rate Limiting**: Controle de uso e segurança avançada
+
+### 📱 Expansões
+- [ ] **App Mobile PWA**: Versão otimizada para dispositivos móveis
+- [ ] **Integração WhatsApp**: Envio automático de orçamentos
+- [ ] **Multi-idiomas**: Suporte para inglês e espanhol
+- [ ] **Marketplace**: Conexão com freelancers e fornecedores
+- [ ] **AI Avançada**: Análise preditiva de fechamento
 
 ## ❓ FAQ
 
