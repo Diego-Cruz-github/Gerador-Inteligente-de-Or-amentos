@@ -19,7 +19,17 @@ export const chatAPI = {
     include_market_research: includeMarketResearch
   }),
   
-  getConversation: (sessionId) => api.get(`/chat/conversation/${sessionId}`)
+  getConversation: (sessionId) => api.get(`/chat/conversation/${sessionId}`),
+  
+  generateQuickQuote: (sessionId) => api.post(`/chat/quick-quote/${sessionId}`),
+  
+  generateFromForm: (formData) => api.post('/chat/generate-from-form', formData),
+  
+  generateDetailedFromForm: (formData) => api.post('/chat/generate-detailed-from-form', formData),
+  
+  generatePDF: (data) => api.post('/chat/generate-pdf', data),
+  
+  sendEmail: (data) => api.post('/chat/send-email', data)
 }
 
 // Orçamentos API  

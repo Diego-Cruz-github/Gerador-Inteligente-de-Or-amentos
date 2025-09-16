@@ -5,7 +5,9 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
           <div class="flex items-center">
-            <h1 class="text-xl font-bold text-gray-900">Gerador Inteligente de Orçamentos</h1>
+            <router-link to="/" class="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors duration-200">
+              Gerador Inteligente de Orçamentos
+            </router-link>
             <div class="ml-4 px-3 py-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full">
               <a 
                 href="https://www.diegofontedev.com.br" 
@@ -29,9 +31,9 @@
               Orçamento Rápido
             </router-link>
             <router-link 
-              to="/detailed" 
+              to="/detailed-app" 
               class="text-green-600 hover:text-green-800 font-medium transition-colors duration-200 flex items-center space-x-1"
-              :class="{ 'border-b-2 border-green-600': $route.path === '/detailed' }"
+              :class="{ 'border-b-2 border-green-600': $route.path === '/detailed-app' }"
             >
               <span>Orçamento Detalhado</span>
               <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-semibold">NOVO</span>

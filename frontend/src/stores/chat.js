@@ -23,8 +23,12 @@ export const useChatStore = defineStore('chat', {
   actions: {
     async startNewConversation() {
       try {
+        console.log('🚀 Iniciando CHAT NORMAL...')
         this.isLoading = true
         this.error = null
+        
+        // Limpar sessão anterior para evitar conflito com chat detalhado
+        this.clearConversation()
         
         const response = await chatAPI.startConversation()
         
@@ -45,8 +49,12 @@ export const useChatStore = defineStore('chat', {
 
     async startDetailedConversation() {
       try {
+        console.log('🔍 Iniciando CHAT DETALHADO...')
         this.isLoading = true
         this.error = null
+        
+        // Limpar sessão anterior para evitar conflito com chat normal
+        this.clearConversation()
         
         const response = await chatAPI.startDetailedConversation()
         
@@ -136,16 +144,50 @@ export const useChatStore = defineStore('chat', {
     },
 
     clearConversation() {
+      console.log('🧹 Limpando conversa completa...')
       this.sessionId = null
       this.conversationId = null
       this.messages = []
       this.requirements = {}
       this.currentQuote = null
       this.error = null
+      this.isLoading = false
+      this.isTyping = false
+      console.log('✅ Conversa limpa:', { sessionId: this.sessionId, messages: this.messages.length })
     },
 
     clearError() {
       this.error = null
+    },
+
+    async generateQuickQuote() {
+      if (!this.sessionId) {
+        throw new Error('Nenhuma sessão ativa')
+      }
+
+      try {
+        this.isLoading = true
+        this.error = null
+
+        const response = await chatAPI.generateQuickQuote(this.sessionId)
+
+        if (response.data.success) {
+          // Adicionar mensagem explicativa
+          this.addMessage('assistant', response.data.message)
+          
+          // Salvar orçamento gerado
+          this.currentQuote = response.data.quote
+          
+        } else {
+          throw new Error(response.data.error || 'Erro ao gerar orçamento rápido')
+        }
+      } catch (error) {
+        this.error = error.response?.data?.error || error.message
+        this.addMessage('assistant', 'Desculpe, não foi possível gerar o orçamento rápido. Tente novamente.')
+        console.error('Erro ao gerar orçamento rápido:', error)
+      } finally {
+        this.isLoading = false
+      }
     }
   }
 })

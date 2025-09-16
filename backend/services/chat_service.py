@@ -147,6 +147,41 @@ class ChatService:
             'requirements': requirements
         }
 
+    def generate_quick_quote(self, conversation_id):
+        """Gera orçamento rápido com dados mínimos disponíveis"""
+        conversation = Conversation.query.get(conversation_id)
+        if not conversation:
+            raise ValueError("Conversa não encontrada")
+        
+        requirements = conversation.get_requirements()
+        
+        # Aplicar defaults inteligentes para dados faltantes
+        quick_requirements = self._apply_quick_defaults(requirements, conversation)
+        
+        # Gerar orçamento com dados padrão
+        try:
+            quote = self.pricing_service.generate_quote(
+                conversation_id, 
+                quick_requirements, 
+                include_market_research=False
+            )
+            
+            # Adicionar mensagem explicativa sobre orçamento rápido
+            explanation = self._generate_quick_quote_explanation(quick_requirements)
+            conversation.add_message('assistant', explanation)
+            
+            db.session.commit()
+            
+            return {
+                'quote': quote,
+                'explanation': explanation,
+                'used_defaults': True
+            }
+            
+        except Exception as e:
+            print(f"Erro ao gerar orçamento rápido: {e}")
+            raise ValueError("Não foi possível gerar orçamento rápido no momento")
+
     def _generate_response(self, conversation, user_message, messages, requirements):
         """Gera resposta baseada no contexto da conversa"""
         
@@ -254,6 +289,14 @@ class ChatService:
             info['region'] = 'remoto'
         else:
             info['region'] = 'interior'
+            
+        # Detecção de faixa de orçamento
+        if any(word in message_lower for word in ['econômico', 'economico', 'barato', 'menor preço', 'custo baixo']):
+            info['budget_tier'] = 'economico'
+        elif any(word in message_lower for word in ['premium', 'top', 'melhor qualidade', 'alta qualidade', 'robusto']):
+            info['budget_tier'] = 'premium'
+        elif any(word in message_lower for word in ['padrão', 'padrao', 'normal', 'intermediário', 'intermediario']):
+            info['budget_tier'] = 'padrao'
         
         return info
 
@@ -286,6 +329,16 @@ class ChatService:
             elif requirements.get('user_levels') is None:
                 return "Precisa de diferentes níveis de acesso (admin, usuário comum, etc.)?"
         
+        # Pergunta sobre orçamento se ainda não foi definido
+        if not requirements.get('budget_tier'):
+            return """**Última pergunta!** Qual faixa de orçamento se encaixa melhor? 💰
+
+• **Econômico**: Solução funcional, melhor custo-benefício 💰
+• **Padrão**: Solução completa com recursos avançados ⚡  
+• **Premium**: Tecnologias de ponta e arquitetura robusta 🚀
+
+**Responda**: Econômico, Padrão ou Premium?"""
+        
         return "Me conte mais sobre alguma funcionalidade específica que é importante para você."
 
     def _has_sufficient_info(self, requirements):
@@ -295,7 +348,7 @@ class ChatService:
         if not project_type:
             return False
         
-        base_requirements = ['project_type', 'complexity']
+        base_requirements = ['project_type', 'complexity', 'budget_tier']  # Adicionado budget_tier
         
         if project_type == 'app':
             specific_requirements = ['expected_users']
@@ -340,3 +393,269 @@ O orçamento inclui {len(quote['features'])} funcionalidades principais e foi ca
         base_message += "\n\nGostaria de ver o detalhamento completo ou fazer algum ajuste?"
         
         return base_message
+
+    def _apply_quick_defaults(self, requirements, conversation):
+        """Aplica valores padrão inteligentes para orçamento rápido"""
+        quick_requirements = requirements.copy()
+        
+        # Tentar identificar tipo de projeto das mensagens
+        if not quick_requirements.get('project_type'):
+            quick_requirements['project_type'] = self._infer_project_type_from_conversation(conversation)
+        
+        # Aplicar defaults baseados no tipo identificado
+        project_type = quick_requirements.get('project_type', 'website')  # default website
+        
+        # Defaults por tipo de projeto
+        if project_type == 'website':
+            quick_requirements.setdefault('pages_count', 5)  # Site pequeno
+            quick_requirements.setdefault('is_ecommerce', False)
+            quick_requirements.setdefault('needs_admin', False)
+        elif project_type == 'app':
+            quick_requirements.setdefault('expected_users', 1000)  # App pequeno
+            quick_requirements.setdefault('offline_support', False)
+            quick_requirements.setdefault('push_notifications', False)
+        elif project_type == 'sistema':
+            quick_requirements.setdefault('concurrent_users', 10)  # Sistema pequeno
+            quick_requirements.setdefault('needs_reports', False)
+            quick_requirements.setdefault('user_levels', False)
+        
+        # Defaults globais
+        quick_requirements.setdefault('complexity', 'baixa')  # Sempre começar simples
+        quick_requirements.setdefault('budget_tier', 'economico')  # Orçamento econômico
+        quick_requirements.setdefault('region', 'interior')  # Região mais barata
+        
+        return quick_requirements
+    
+    def _infer_project_type_from_conversation(self, conversation):
+        """Tenta identificar tipo de projeto analisando todas as mensagens"""
+        messages = conversation.get_messages()
+        all_text = ' '.join([msg['content'].lower() for msg in messages if msg['role'] == 'user'])
+        
+        # Palavras-chave para identificar tipo
+        app_keywords = ['app', 'aplicativo', 'mobile', 'android', 'ios']
+        website_keywords = ['site', 'website', 'página', 'portal', 'blog']
+        sistema_keywords = ['sistema', 'dashboard', 'painel', 'crm', 'erp']
+        
+        app_score = sum(1 for keyword in app_keywords if keyword in all_text)
+        website_score = sum(1 for keyword in website_keywords if keyword in all_text)
+        sistema_score = sum(1 for keyword in sistema_keywords if keyword in all_text)
+        
+        if app_score > website_score and app_score > sistema_score:
+            return 'app'
+        elif sistema_score > website_score:
+            return 'sistema'
+        else:
+            return 'website'  # default mais comum
+    
+    def _generate_quick_quote_explanation(self, requirements):
+        """Gera explicação sobre o orçamento rápido gerado"""
+        project_type_names = {
+            'website': 'Website',
+            'app': 'Aplicativo Mobile', 
+            'sistema': 'Sistema Web'
+        }
+        
+        project_name = project_type_names.get(requirements['project_type'], 'Projeto')
+        complexity_name = requirements['complexity'].title()
+        
+        return f"""🚀 **Orçamento Rápido Gerado!**
+
+Baseado nas informações da nossa conversa, criei um orçamento para:
+• **Tipo**: {project_name}
+• **Complexidade**: {complexity_name}
+• **Faixa**: {requirements['budget_tier'].title()}
+
+⚡ **Este é um orçamento estimativo** baseado em configurações padrão. 
+
+💡 **Para um orçamento mais preciso**, posso fazer algumas perguntas adicionais sobre funcionalidades específicas que você precisa.
+
+**Quer continuar com este orçamento ou prefere que eu colete mais detalhes?**"""
+    
+    def analyze_project_description(self, description, service_type, quote):
+        """Analisa a descrição do projeto usando IA e fornece insights sobre o orçamento"""
+        try:
+            # Mapear tipos de serviço para nomes mais descritivos
+            service_names = {
+                'website': 'Website Institucional',
+                'ecommerce': 'E-commerce / Loja Virtual', 
+                'app': 'Aplicativo Mobile',
+                'sistema': 'Sistema Web / Dashboard',
+                'landing': 'Landing Page',
+                'blog': 'Blog / Portal de Conteúdo'
+            }
+            
+            service_name = service_names.get(service_type, service_type)
+            
+            prompt = f"""Analise esta descrição de projeto e forneça insights sobre o orçamento gerado:
+
+**Tipo de Projeto**: {service_name}
+**Descrição do Cliente**: {description}
+
+**Orçamento Gerado**:
+- Valor Total: R$ {quote['total_cost']:,.2f}
+- Horas: {quote['total_hours']}h  
+- Prazo: {quote['timeline_weeks']}
+- Valor/Hora: R$ {quote['hourly_rate']}
+
+Forneça uma análise em português brasileiro que inclua:
+
+1. **Complexidade Identificada**: Avalie se o projeto descrito tem baixa, média ou alta complexidade
+2. **Adequação do Orçamento**: Se o valor está adequado para o escopo descrito
+3. **Pontos de Atenção**: Funcionalidades que podem impactar o preço
+4. **Recomendações**: Sugestões para otimizar custos ou melhorar o projeto
+
+Seja objetivo e mantenha o tom profissional. Máximo 200 palavras."""
+
+            # Usar o serviço de IA para análise
+            analysis = self.ai_service.chat_completion(prompt)
+            
+            return analysis
+            
+        except Exception as e:
+            print(f"Erro na análise IA: {e}")
+            # Fallback para análise básica
+            return self._basic_project_analysis(description, service_type, quote)
+    
+    def _basic_project_analysis(self, description, service_type, quote):
+        """Análise básica quando a IA não está disponível"""
+        complexity_indicators = {
+            'alta': ['integração', 'api', 'pagamento', 'usuários', 'dashboard', 'relatórios', 'admin'],
+            'média': ['formulário', 'contato', 'cadastro', 'login', 'busca'],
+            'baixa': ['simples', 'básico', 'institucional', 'apresentação']
+        }
+        
+        desc_lower = description.lower()
+        complexity = 'média'  # default
+        
+        alta_count = sum(1 for word in complexity_indicators['alta'] if word in desc_lower)
+        baixa_count = sum(1 for word in complexity_indicators['baixa'] if word in desc_lower)
+        
+        if alta_count > 2:
+            complexity = 'alta'
+        elif baixa_count > 1 and alta_count == 0:
+            complexity = 'baixa'
+        
+        return f"""**Análise do Projeto**
+
+**Complexidade Identificada**: {complexity.title()}
+
+**Adequação do Orçamento**: O valor de R$ {quote['total_cost']:,.2f} está dentro da faixa de mercado para projetos de {complexity} complexidade.
+
+**Pontos de Atenção**: Verifique se todas as funcionalidades mencionadas estão incluídas no escopo.
+
+**Recomendações**: Para projetos de {service_type}, recomendo definir bem os requisitos técnicos antes do início do desenvolvimento."""
+    
+    def analyze_detailed_project_description(self, description, service_type, complexity, expected_users, quote):
+        """Análise detalhada do projeto com informações adicionais para orçamento detalhado"""
+        try:
+            # Mapear tipos de serviço para nomes mais descritivos
+            service_names = {
+                'website': 'Website Institucional',
+                'ecommerce': 'E-commerce / Loja Virtual', 
+                'app': 'Aplicativo Mobile',
+                'sistema': 'Sistema Web / Dashboard',
+                'landing': 'Landing Page',
+                'blog': 'Blog / Portal de Conteúdo',
+                'api': 'API / Microserviços',
+                'erp': 'Sistema ERP',
+                'crm': 'Sistema CRM'
+            }
+            
+            # Mapear complexidade
+            complexity_names = {
+                'baixa': 'Baixa',
+                'media': 'Média', 
+                'alta': 'Alta',
+                'enterprise': 'Enterprise'
+            }
+            
+            # Mapear expected users
+            users_names = {
+                'small': 'Pequeno (até 100 usuários)',
+                'medium': 'Médio (100-1.000 usuários)',
+                'large': 'Grande (1.000-10.000 usuários)',
+                'enterprise': 'Enterprise (10.000+ usuários)'
+            }
+            
+            service_name = service_names.get(service_type, service_type)
+            complexity_name = complexity_names.get(complexity, complexity)
+            users_name = users_names.get(expected_users, expected_users)
+            
+            prompt = f"""Analise esta descrição DETALHADA de projeto e forneça insights avançados sobre o orçamento gerado:
+
+**Tipo de Projeto**: {service_name}
+**Complexidade**: {complexity_name}
+**Usuários Esperados**: {users_name}
+**Descrição Detalhada do Cliente**: {description}
+
+**Orçamento Gerado**:
+- Valor Total: R$ {quote['total_cost']:,.2f}
+- Horas: {quote['total_hours']}h  
+- Prazo: {quote['timeline_weeks']}
+- Valor/Hora: R$ {quote['hourly_rate']}
+
+Forneça uma análise DETALHADA em português brasileiro que inclua:
+
+1. **Análise de Complexidade**: Avalie se a complexidade {complexity_name} está adequada para o projeto descrito
+2. **Dimensionamento de Usuários**: Se o valor está adequado para {users_name}
+3. **Adequação do Orçamento**: Análise crítica se o valor está competitivo no mercado brasileiro
+4. **Funcionalidades Identificadas**: Liste as principais funcionalidades que identificou na descrição
+5. **Pontos de Atenção e Riscos**: Possíveis desafios técnicos e comerciais
+6. **Recomendações de Otimização**: Como melhorar custo-benefício
+7. **Comparação de Mercado**: Se o valor está abaixo, dentro ou acima da faixa de mercado
+8. **Sugestões Técnicas**: Tecnologias e abordagens recomendadas
+
+Seja mais detalhado que a análise simples. Máximo 400 palavras."""
+
+            # Usar o serviço de IA para análise detalhada
+            analysis = self.ai_service.chat_completion(prompt)
+            
+            return analysis
+            
+        except Exception as e:
+            print(f"Erro na análise IA detalhada: {e}")
+            # Fallback para análise básica detalhada
+            return self._basic_detailed_project_analysis(description, service_type, complexity, expected_users, quote)
+    
+    def _basic_detailed_project_analysis(self, description, service_type, complexity, expected_users, quote):
+        """Análise básica detalhada quando a IA não está disponível"""
+        complexity_indicators = {
+            'alta': ['integração', 'api', 'pagamento', 'usuários', 'dashboard', 'relatórios', 'admin', 'sistema', 'banco'],
+            'média': ['formulário', 'contato', 'cadastro', 'login', 'busca', 'upload', 'notificação'],
+            'baixa': ['simples', 'básico', 'institucional', 'apresentação', 'informativo']
+        }
+        
+        desc_lower = description.lower()
+        
+        # Contar indicadores de complexidade
+        alta_count = sum(1 for word in complexity_indicators['alta'] if word in desc_lower)
+        media_count = sum(1 for word in complexity_indicators['média'] if word in desc_lower)
+        baixa_count = sum(1 for word in complexity_indicators['baixa'] if word in desc_lower)
+        
+        # Análise de adequação da complexidade
+        complexity_analysis = "adequada"
+        if complexity == 'baixa' and alta_count > 2:
+            complexity_analysis = "pode estar subestimada"
+        elif complexity == 'alta' and baixa_count > 1 and alta_count == 0:
+            complexity_analysis = "pode estar superestimada"
+        
+        return f"""**Análise Detalhada do Projeto**
+
+**Análise de Complexidade**: A complexidade {complexity.title()} {complexity_analysis} com base na descrição fornecida.
+
+**Dimensionamento de Usuários**: Para um projeto de porte {expected_users}, o orçamento de R$ {quote['total_cost']:,.2f} está dentro das expectativas.
+
+**Adequação do Orçamento**: O valor está competitivo para o mercado brasileiro, considerando a complexidade {complexity} e escala {expected_users}.
+
+**Funcionalidades Identificadas**: {alta_count + media_count} funcionalidades principais identificadas na descrição.
+
+**Pontos de Atenção**: Projetos de {service_type} com {complexity} complexidade requerem atenção especial ao escopo.
+
+**Recomendações**: 
+- Definir MVP para primeira versão
+- Considerar desenvolvimento iterativo
+- Validar requisitos técnicos antes do início
+
+**Comparação de Mercado**: Valor dentro da faixa de mercado para projetos similares no Brasil.
+
+**Sugestões Técnicas**: Usar tecnologias modernas e práticas de mercado para garantir escalabilidade."""

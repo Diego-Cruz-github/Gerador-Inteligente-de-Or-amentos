@@ -45,3 +45,23 @@
     @apply w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all duration-200;
   }
 }
+
+/* Fix para menus suspensos globalmente */
+select {
+  -webkit-appearance: menulist !important;
+  -moz-appearance: menulist !important;
+  appearance: menulist !important;
+  background-color: white !important;
+  cursor: pointer !important;
+}
+
+select:focus {
+  outline: 2px solid #3b82f6 !important;
+  outline-offset: -2px !important;
+}
+
+select option {
+  background-color: white !important;
+  color: black !important;
+  padding: 8px !important;
+}

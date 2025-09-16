@@ -7,59 +7,71 @@ from extensions import db
 
 class PricingService:
     def __init__(self):
-        # Dados de mercado brasileiros - custos realistas (Set/2024)
-        # Valores incluem: desenvolvimento, infraestrutura, licenças e margem
+        # MERCADO BRASILEIRO REAL - Valores praticados 2024
+        # Baseado em pesquisa de 99Freelas, Workana, GetNinjas
         self.hourly_rates = {
-            'SP': {'junior': 65, 'pleno': 85, 'senior': 120},
-            'interior': {'junior': 50, 'pleno': 70, 'senior': 95}, 
-            'remoto': {'junior': 55, 'pleno': 75, 'senior': 105}
+            'SP': {
+                'economico': {'junior': 25, 'pleno': 35, 'senior': 50},     # Freelancer iniciante
+                'padrao': {'junior': 40, 'pleno': 55, 'senior': 75},       # Freelancer experiente
+                'premium': {'junior': 60, 'pleno': 80, 'senior': 120}      # Agência/Especialista
+            },
+            'interior': {
+                'economico': {'junior': 20, 'pleno': 30, 'senior': 40},    # Freelancer iniciante
+                'padrao': {'junior': 30, 'pleno': 45, 'senior': 60},       # Freelancer experiente
+                'premium': {'junior': 45, 'pleno': 65, 'senior': 90}       # Agência/Especialista
+            },
+            'remoto': {
+                'economico': {'junior': 22, 'pleno': 32, 'senior': 45},    # Freelancer iniciante
+                'padrao': {'junior': 35, 'pleno': 50, 'senior': 70},       # Freelancer experiente
+                'premium': {'junior': 50, 'pleno': 70, 'senior': 100}      # Agência/Especialista
+            }
         }
         
-        # Templates base de projetos
+        # Templates REALISTAS para mercado brasileiro - Sites simples
         self.project_templates = {
             'app': {
                 'name': 'Aplicativo Mobile',
                 'base_hours': {
-                    'design': 50,
-                    'frontend': 80,
-                    'backend': 70,
-                    'testing': 25,
-                    'pm': 35
+                    'design': 20,      # App simples
+                    'frontend': 35,    # React Native básico
+                    'backend': 30,     # API simples
+                    'testing': 8,      # Testes básicos
+                    'pm': 12           # Gestão mínima
                 },
                 'complexity_multipliers': {
-                    'baixa': 0.6,
-                    'media': 1.0,
-                    'alta': 1.4
+                    'baixa': 0.6,      # App muito simples
+                    'media': 1.0,      # App padrão
+                    'alta': 1.8        # App complexo
                 }
             },
             'website': {
                 'name': 'Website/Portal',
                 'base_hours': {
-                    'design': 40,
-                    'frontend': 60,
-                    'backend': 45,
-                    'testing': 20,
-                    'pm': 25
+                    'design': 12,      # Layout simples (Figma/template)
+                    'frontend': 20,    # HTML/CSS/JS básico
+                    'backend': 15,     # WordPress/PHP básico
+                    'testing': 5,      # Testes manuais
+                    'pm': 8            # Gestão mínima
                 },
                 'complexity_multipliers': {
-                    'baixa': 0.5,
-                    'media': 1.0,
-                    'alta': 1.3
+                    'baixa': 0.5,      # Site institucional básico
+                    'media': 1.0,      # Site padrão com formulários
+                    'alta': 2.0        # E-commerce ou portal complexo
                 }
             },
             'sistema': {
                 'name': 'Sistema Web',
                 'base_hours': {
-                    'design': 70,
-                    'frontend': 110,
-                    'backend': 140,
-                    'testing': 50,
-                    'pm': 60
+                    'design': 25,      # Interface administrativa
+                    'frontend': 45,    # Dashboard básico
+                    'backend': 60,     # CRUD + autenticação
+                    'testing': 15,     # Testes funcionais
+                    'pm': 20           # Gestão de projeto
                 },
                 'complexity_multipliers': {
-                    'baixa': 0.7,
-                    'media': 1.0,
-                    'alta': 1.5
+                    'baixa': 0.7,      # Sistema simples
+                    'media': 1.0,      # Sistema padrão
+                    'alta': 1.6        # Sistema empresarial
                 }
             }
         }
@@ -138,6 +150,7 @@ Esta pesquisa foi considerada no cálculo do seu orçamento personalizado."""
         project_type = requirements.get('project_type')
         complexity = requirements.get('complexity', 'media')
         region = requirements.get('region', 'interior')
+        budget_tier = requirements.get('budget_tier', 'economico')  # NOVO: tier de orçamento
         
         # Buscar template do projeto - fallback para 'app' se não encontrar
         if not project_type or project_type not in self.project_templates:
@@ -165,7 +178,7 @@ Esta pesquisa foi considerada no cálculo do seu orçamento personalizado."""
         
         # Determinar nível de senioridade baseado na complexidade
         seniority_level = self._determine_seniority(complexity, requirements)
-        hourly_rate = self.hourly_rates[region][seniority_level]
+        hourly_rate = self.hourly_rates[region][budget_tier][seniority_level]  # MODIFICADO: usar tier
         
         # Calcular totais
         total_hours = sum(calculated_hours.values())
@@ -204,6 +217,39 @@ Esta pesquisa foi considerada no cálculo do seu orçamento personalizado."""
         db.session.commit()
         
         return self._format_quote_response(orcamento, calculated_hours, hourly_rate, market_research)
+
+    def generate_multiple_quotes(self, conversation_id, requirements, include_market_research=False):
+        """Gera 3 opções de orçamento: Econômico, Padrão e Premium"""
+        
+        quotes = {}
+        tiers = ['economico', 'padrao', 'premium']
+        tier_names = {
+            'economico': 'Econômico',
+            'padrao': 'Padrão', 
+            'premium': 'Premium'
+        }
+        tier_descriptions = {
+            'economico': 'Solução funcional e eficiente com o melhor custo-benefício',
+            'padrao': 'Solução completa com qualidade profissional e recursos avançados',
+            'premium': 'Solução premium com tecnologias de ponta e arquitetura robusta'
+        }
+        
+        for tier in tiers:
+            # Criar cópia dos requirements com o tier específico
+            tier_requirements = requirements.copy()
+            tier_requirements['budget_tier'] = tier
+            
+            # Gerar orçamento para este tier
+            quote = self.generate_quote(conversation_id, tier_requirements, include_market_research)
+            
+            # Adicionar informações do tier
+            quote['tier'] = tier
+            quote['tier_name'] = tier_names[tier]
+            quote['tier_description'] = tier_descriptions[tier]
+            
+            quotes[tier] = quote
+        
+        return quotes
 
     def _apply_requirements_adjustments(self, hours, requirements, project_type):
         """Aplica ajustes específicos baseados nos requisitos"""
@@ -284,8 +330,31 @@ Esta pesquisa foi considerada no cálculo do seu orçamento personalizado."""
             return 'pleno'
 
     def _calculate_timeline(self, total_hours):
-        """Calcula timeline em semanas (assumindo 40h/semana)"""
-        return max(4, int(total_hours / 40) + 2)  # Mínimo 4 semanas
+        """Calcula timeline em dias úteis (freelancer dedicado ~8h/dia útil)"""
+        # Freelancer brasileiro dedicado: 8h/dia útil, 5 dias/semana = 40h/semana
+        daily_hours = 8
+        days = max(2, int(total_hours / daily_hours))  # Mínimo 2 dias
+        return days  # Retorna número de dias para o banco
+    
+    def _format_timeline(self, days):
+        """Formata timeline em formato amigável"""
+        if days <= 7:
+            return f"{days} dias"
+        else:
+            weeks = days / 5
+            if weeks <= 1.2:  # Até 6 dias úteis = ~1 semana
+                return "1 semana"
+            elif weeks < 2:
+                return f"{days} dias"
+            elif weeks == int(weeks):
+                return f"{int(weeks)} semanas" 
+            else:
+                # Arredondar para meio ou inteiro
+                rounded_weeks = round(weeks * 2) / 2  # Arredonda para 0.5
+                if rounded_weeks == int(rounded_weeks):
+                    return f"{int(rounded_weeks)} semanas"
+                else:
+                    return f"{rounded_weeks} semanas"
 
     def _generate_description(self, requirements):
         """Gera descrição do projeto"""
@@ -380,7 +449,7 @@ Esta pesquisa foi considerada no cálculo do seu orçamento personalizado."""
             'total_cost': orcamento.total_cost,
             'total_hours': orcamento.total_hours,
             'hourly_rate': hourly_rate,
-            'timeline_weeks': orcamento.timeline_weeks,
+            'timeline_weeks': self._format_timeline(orcamento.timeline_weeks),
             'complexity': orcamento.complexity_level,
             'region': orcamento.region,
             'hours_breakdown': hours_breakdown,

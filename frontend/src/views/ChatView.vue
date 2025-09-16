@@ -132,6 +132,20 @@
           </button>
         </div>
         
+        <!-- Quick Quote Button -->
+        <div class="flex justify-center mb-4">
+          <button
+            @click="generateQuickQuote"
+            :disabled="chatStore.isLoading"
+            class="bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-6 rounded-lg disabled:opacity-50 flex items-center space-x-2"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            <span>⚡ Gerar Orçamento Agora</span>
+          </button>
+        </div>
+
         <button 
           @click="clearChat"
           class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg"
@@ -207,6 +221,19 @@ const sendMessage = async () => {
 const clearChat = async () => {
   chatStore.clearConversation()
   await startChat()
+}
+
+const generateQuickQuote = async () => {
+  if (!chatStore.sessionId) {
+    console.error('Nenhuma sessão ativa')
+    return
+  }
+  
+  try {
+    await chatStore.generateQuickQuote()
+  } catch (error) {
+    console.error('Erro ao gerar orçamento rápido:', error)
+  }
 }
 
 const formatCurrency = (value) => {
