@@ -33,11 +33,13 @@ with app.app_context():
     from routes.chat import chat_bp
     from routes.orcamentos import orcamentos_bp
     from routes.dashboard import dashboard_bp
+    from routes.analytics import analytics_bp
     
     # Registrar blueprints
     app.register_blueprint(chat_bp, url_prefix='/api/chat')
     app.register_blueprint(orcamentos_bp, url_prefix='/api/orcamentos')
     app.register_blueprint(dashboard_bp, url_prefix='/api/dashboard')
+    app.register_blueprint(analytics_bp, url_prefix='/api/analytics')
 
 @app.route('/')
 def index():
@@ -48,7 +50,8 @@ def index():
         'endpoints': {
             'chat': '/api/chat',
             'orcamentos': '/api/orcamentos',
-            'dashboard': '/api/dashboard'
+            'dashboard': '/api/dashboard',
+            'analytics': '/api/analytics'
         }
     })
 

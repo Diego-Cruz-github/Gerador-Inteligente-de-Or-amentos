@@ -1,0 +1,15 @@
+# URLs para Business Intelligence
+
+## Power BI / Tableau
+http://localhost:5000/api/analytics/summary
+http://localhost:5000/api/analytics/detailed-jobs
+http://localhost:5000/api/analytics/time-series
+
+## Google Data Studio (CSV)
+http://localhost:5000/api/analytics/export/csv
+
+## Teste de Saude
+http://localhost:5000/health
+
+## Interface Web
+http://localhost:3000/bi-integration

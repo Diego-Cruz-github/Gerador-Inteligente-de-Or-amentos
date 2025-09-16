@@ -1,0 +1,58 @@
+{
+  "version": "1.0",
+  "compatibility": 1,
+  "dataModel": {
+    "tables": [
+      {
+        "name": "OrcamentosData",
+        "source": {
+          "type": "web",
+          "url": "http://localhost:5000/api/analytics/summary"
+        },
+        "refreshPolicy": {
+          "frequency": "300000"
+        }
+      }
+    ]
+  },
+  "reportPages": [
+    {
+      "name": "Dashboard Executivo",
+      "visuals": [
+        {
+          "type": "card",
+          "title": "Receita Total",
+          "measure": "summary.total_revenue",
+          "format": "currency",
+          "position": {"x": 0, "y": 0, "width": 200, "height": 100}
+        },
+        {
+          "type": "card", 
+          "title": "Taxa Conversão",
+          "measure": "summary.conversion_rate",
+          "format": "percentage",
+          "position": {"x": 220, "y": 0, "width": 200, "height": 100}
+        },
+        {
+          "type": "card",
+          "title": "Trabalhos Fechados",
+          "measure": "summary.total_closed_jobs", 
+          "format": "number",
+          "position": {"x": 440, "y": 0, "width": 200, "height": 100}
+        },
+        {
+          "type": "donutChart",
+          "title": "Receita por Serviço",
+          "category": "distributions.by_service",
+          "values": "revenue",
+          "position": {"x": 0, "y": 120, "width": 400, "height": 300}
+        }
+      ]
+    }
+  ],
+  "theme": {
+    "colors": ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"],
+    "background": "#ffffff",
+    "fontFamily": "Segoe UI"
+  }
+}

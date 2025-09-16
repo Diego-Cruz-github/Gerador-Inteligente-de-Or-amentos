@@ -1,0 +1,66 @@
+{
+  "version": "1.0",
+  "name": "Dashboard Orçamentos Inteligente",
+  "description": "Template automático para Power BI",
+  "pages": [
+    {
+      "name": "Dashboard Executivo",
+      "visuals": [
+        {
+          "type": "card",
+          "title": "Receita Total",
+          "field": "summary.total_revenue",
+          "format": "currency",
+          "position": {"x": 0, "y": 0, "width": 200, "height": 100},
+          "color": "#1f77b4"
+        },
+        {
+          "type": "card", 
+          "title": "Taxa de Conversão",
+          "field": "summary.conversion_rate",
+          "format": "percentage",
+          "position": {"x": 220, "y": 0, "width": 200, "height": 100},
+          "color": "#ff7f0e"
+        },
+        {
+          "type": "card",
+          "title": "Trabalhos Fechados", 
+          "field": "summary.total_closed_jobs",
+          "format": "number",
+          "position": {"x": 440, "y": 0, "width": 200, "height": 100},
+          "color": "#2ca02c"
+        },
+        {
+          "type": "card",
+          "title": "Ticket Médio",
+          "field": "summary.avg_project_value", 
+          "format": "currency",
+          "position": {"x": 660, "y": 0, "width": 200, "height": 100},
+          "color": "#d62728"
+        },
+        {
+          "type": "donut_chart",
+          "title": "Receita por Tipo de Serviço",
+          "field": "distributions.by_service",
+          "position": {"x": 0, "y": 120, "width": 400, "height": 300}
+        },
+        {
+          "type": "column_chart", 
+          "title": "Receita por Localização",
+          "field": "distributions.by_location",
+          "position": {"x": 420, "y": 120, "width": 400, "height": 300}
+        },
+        {
+          "type": "bar_chart",
+          "title": "Distribuição por Faixa de Orçamento", 
+          "field": "distributions.by_budget",
+          "position": {"x": 0, "y": 440, "width": 820, "height": 200}
+        }
+      ]
+    }
+  ],
+  "dataSource": {
+    "url": "http://localhost:5000/api/analytics/summary",
+    "refresh": "5min"
+  }
+}

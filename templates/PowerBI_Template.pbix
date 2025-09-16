@@ -1,0 +1,55 @@
+# PowerBI Template Configuration
+# Este arquivo será convertido em um template .pbix
+
+# Data Source Configuration
+DataSource1:
+  Name: "Orçamentos - Resumo Analytics"
+  Type: "Web"
+  URL: "http://localhost:5000/api/analytics/summary"
+  RefreshInterval: "00:05:00"
+
+DataSource2:
+  Name: "Orçamentos - Dados Detalhados"
+  Type: "Web" 
+  URL: "http://localhost:5000/api/analytics/detailed-jobs"
+  RefreshInterval: "00:05:00"
+
+DataSource3:
+  Name: "Orçamentos - Série Temporal"
+  Type: "Web"
+  URL: "http://localhost:5000/api/analytics/time-series"
+  RefreshInterval: "00:05:00"
+
+# Dashboard Layout
+Pages:
+  - Name: "Executive Dashboard"
+    Visuals:
+      - Type: "Card"
+        Title: "Total Revenue"
+        Data: "summary.total_revenue"
+        Format: "Currency"
+      
+      - Type: "Card"
+        Title: "Conversion Rate"
+        Data: "summary.conversion_rate"
+        Format: "Percentage"
+      
+      - Type: "Donut Chart"
+        Title: "Revenue by Service"
+        Data: "distributions.by_service"
+        
+      - Type: "Column Chart"
+        Title: "Monthly Trend"
+        Data: "time_series"
+        X: "date"
+        Y: "revenue"
+
+  - Name: "Operational Analytics"
+    Visuals:
+      - Type: "Table"
+        Title: "All Jobs"
+        Data: "jobs"
+        
+      - Type: "Bar Chart"
+        Title: "Jobs by Location"
+        Data: "distributions.by_location"
