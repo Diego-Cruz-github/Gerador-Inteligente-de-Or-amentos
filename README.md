@@ -1,14 +1,53 @@
 # 🚀 Gerador Inteligente de Orçamentos - DEMO
 
-> **Sistema conversacional inteligente que gera orçamentos profissionais através de chat com IA. A solução coleta requisitos via conversa natural e produz estimativas precisas baseadas em dados reais de mercado.**
+[![Flask](https://img.shields.io/badge/Flask-2.x-green.svg)](https://flask.palletsprojects.com/)
+[![Vue.js](https://img.shields.io/badge/Vue.js-3.x-brightgreen.svg)](https://vuejs.org/)
+[![SQLite](https://img.shields.io/badge/SQLite-3.x-lightblue.svg)](https://sqlite.org/)
+[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://python.org/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.x-blue.svg)](https://tailwindcss.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+> **🚀 PROJETO DEMO** - Sistema conversacional inteligente que gera orçamentos profissionais através de chat com IA. A solução coleta requisitos via conversa natural e produz estimativas precisas baseadas em dados reais de mercado.
 
 ## ⚡ DEMO - Projeto Conceito
 
-Este é um projeto **DEMO** que demonstra as possibilidades de sistemas conversacionais aplicados ao mundo dos negócios. O código é **100% editável** e pode ser adaptado para diversos tipos de projetos além de orçamentos.
+Este é um **projeto DEMO** que demonstra as possibilidades de sistemas conversacionais aplicados ao mundo dos negócios. O código é **100% editável** e pode ser adaptado para diversos tipos de projetos além de orçamentos.
+
+### 🎯 Por que este DEMO é Especial?
+
+- **Conversação Natural**: Chat inteligente que entende contexto e faz perguntas relevantes
+- **Frontend Totalmente Editável**: Modifique cores, layout, textos, funcionalidades
+- **BI Integrado**: Power BI e Google Data Studio com dashboards automáticos
+- **API Analytics**: Endpoints completos para integração com ferramentas empresariais
+- **Flexibilidade Total**: Adapte para qualquer tipo de consultoria ou serviço
 
 ## 🎯 Conceito
 
 Sistema inovador que transforma conversas em orçamentos profissionais precisos. O usuário conversa com IA e recebe estimativas detalhadas em tempo real, simulando uma consultoria real.
+
+## 📸 Screenshots
+
+<div align="center">
+
+### Funcionalidades
+![Funcionalidades](Screenshots%20e%20vídeos/funcionalidades.gif)
+
+### Funcionalidades 2
+![Funcionalidades 2](Screenshots%20e%20vídeos/Funcionalidades2.gif)
+
+### Orçamento Rápido
+![Orçamento Rápido](Screenshots%20e%20vídeos/Orçamento-Rápido.gif)
+
+### Orçamento Detalhado
+![Orçamento Detalhado](Screenshots%20e%20vídeos/OrçamentoDetalhado.gif)
+
+### Integração com Power BI
+![Integração com Power BI](Screenshots%20e%20vídeos/integração-com-powerbi.gif)
+
+### Integração Data Studio (Google)
+![Integração Data Studio Google](Screenshots%20e%20vídeos/IntegraçãoDataStudioGoogle.gif)
+
+</div>
 
 ## 🔥 Novas Funcionalidades Disponíveis
 
@@ -58,16 +97,38 @@ const themeConfig = {
 - **Consultoria Jurídica**: Honorários advocatícios
 - **E muito mais...** - adapte a lógica para qualquer área!
 
-## 📈 Dados de Mercado Realistas
+## 🎨 Frontend 100% Personalizável
 
-Sistema utiliza dados baseados em pesquisa de mercado atual. Custos empresariais completos incluindo desenvolvimento, infraestrutura, licenças e execução:
-- **Junior**: R$ 65-85/h
-- **Pleno**: R$ 95-120/h  
-- **Senior**: R$ 140-180/h
+### 🎯 Elementos Editáveis
+- **Cores e Tema**: TailwindCSS configurável
+- **Textos e Labels**: Todos centralizados em arquivos config
+- **Logos e Imagens**: Pasta public/ para assets personalizados
+- **Layout**: Componentes Vue modulares
+- **Funcionalidades**: Adicione/remova páginas facilmente
 
-## 🎯 Diferencial
+### 🔧 Como Personalizar
+```javascript
+// frontend/src/style.css - Modifique cores
+:root {
+  --primary-color: #667eea;
+  --secondary-color: #f093fb;
+}
 
-Interface que simula consultoria real ao invés de formulários tradicionais. IA contextual que adapta perguntas ao tipo de projeto com cálculos precisos baseados em dados de mercado atualizados.
+// frontend/src/App.vue - Modifique layout
+const appConfig = {
+  companyName: 'Sua Empresa',
+  logo: '/assets/seu-logo.png',
+  theme: 'custom'
+}
+```
+
+### 🔧 Exemplos de Adaptação para Outros Negócios
+- **Consultoria Financeira**: Orçamentos de investimentos e planejamento
+- **Agência de Marketing**: Campanhas publicitárias e estratégias digitais
+- **Construção Civil**: Estimativas de obras e reformas
+- **Consultoria Jurídica**: Honorários advocatícios e serviços legais
+- **Consultoria TI**: Projetos de software e infraestrutura
+- **E muito mais...** - adapte a lógica para qualquer área de consultoria!
 
 ## 🚀 Instalação Rápida
 
@@ -109,7 +170,6 @@ gerador-orcamentos/
 │   ├── public/
 │   └── package.json
 ├── templates/              # Templates BI (Power BI)
-├── tableau/                # Conectores Tableau
 └── docs/                   # Documentação
 ```
 
@@ -126,12 +186,71 @@ gerador-orcamentos/
    - Dashboard com métricas em tempo real
    - Integração BI com Power BI/Data Studio
 
-## 🔗 Mais Projetos
+## 🔐 Segurança
 
-Confira outros projetos similares: [Chatbot Personalizado](https://github.com/Diego-Cruz-github/chatbot-personalizado-diversos)
+### Medidas Implementadas
+- ✅ Validação de entrada em todos os endpoints
+- ✅ CORS configurado adequadamente
+- ✅ Sanitização de dados do usuário
+- ✅ Rate limiting por IP (futuro)
+- ✅ Logs de segurança e auditoria
+- ✅ SQLite com prepared statements
+
+### Recomendações para Produção
+- Use HTTPS obrigatoriamente
+- Configure firewall adequadamente
+- Monitore logs de acesso
+- Mantenha dependências atualizadas
+- Configure backup automático do banco
+
+## 📝 Roadmap
+
+- [ ] Sistema de autenticação e usuários
+- [ ] Dashboard administrativo avançado
+- [ ] Integração com mais APIs de IA
+- [ ] Sistema de templates personalizáveis
+- [ ] Exportação para Excel/CSV
+- [ ] Webhooks para integrações
+- [ ] App mobile (React Native)
+- [ ] Sistema de notificações
+- [ ] Multi-idiomas (i18n)
+- [ ] Deploy automatizado (Docker + CI/CD)
+
+## ❓ FAQ
+
+**Q: Como configurar minha própria API de IA?**
+A: Edite o arquivo `backend/services/ai_service.py` e configure sua chave API.
+
+**Q: Posso personalizar os cálculos de preço?**
+A: Sim! Modifique o arquivo `backend/services/pricing_service.py` com sua lógica de negócio.
+
+**Q: Como adicionar novos tipos de serviços?**
+A: Edite os arquivos de configuração em `frontend/src/views/` e adicione na lógica do backend.
+
+**Q: É possível integrar com meu CRM existente?**
+A: Sim! Use os endpoints da API Analytics ou crie webhooks personalizados.
+
+## 🔗 Projetos Relacionados
+
+Confira outros projetos DEMO similares:
+- 🤖 **[Chatbot Personalizado](https://github.com/Diego-Cruz-github/chatbot-personalizado-diversos)** - Sistema de chatbot multi-persona totalmente personalizável
+
+## 👨‍💻 Autor
+
+**Diego Fonte** - Desenvolvedor Full Stack | Consultor de Cyber Segurança e IA
+
+- 🌐 Website: [www.diegofontedev.com.br](https://www.diegofontedev.com.br)
+- 🏢 Empresa: [www.zowti.com](https://www.zowti.com)
+- 📧 Email: contato@diegofontedev.com.br
+
+## 📄 Licença
+
+Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE para detalhes.
 
 ---
 
-**Sistema inovador que transforma conversas em orçamentos profissionais precisos!** 🎉
+### 🎯 Projeto DEMO Profissional
 
-*Desenvolvido para demonstrar o potencial de sistemas conversacionais no mundo dos negócios.*
+Este é um **projeto de demonstração profissional** que showcases tecnologias modernas de desenvolvimento e IA aplicadas a sistemas conversacionais de negócios.
+
+**Ready for Production** | **BI Integrated** | **100% Customizable** | **Enterprise Ready**
