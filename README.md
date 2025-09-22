@@ -55,8 +55,8 @@ Sistema inovador que transforma conversas em orçamentos profissionais precisos.
 
 **Diego Fonte** - Desenvolvedor Full Stack | Consultor de Cyber Segurança e IA
 
-- 🌐 Website: [www.diegofontedev.com.br](https://www.diegofontedev.com.br)
-- 🏢 Empresa: [www.zowti.com](https://www.zowti.com)
+- 🌐 Website: [www.diegofontedev.com.br](https://www.diegofontedev.com.br) | [English](https://www.diegofontedev.com.br/index-en.html) | [Español](https://www.diegofontedev.com.br/index-es.html)
+- 🏢 Empresa: [www.zowti.com](https://www.zowti.com) | [English](https://www.zowti.com/en/index.html) | [Español](https://www.zowti.com/es/index.html)
 - 📧 Email: contato@diegofontedev.com.br
 
 ## 🔥 Novas Funcionalidades Disponíveis
@@ -329,8 +329,8 @@ Confira outros projetos DEMO similares:
 
 **Diego Fonte** - Desenvolvedor Full Stack | Consultor de Cyber Segurança e IA
 
-- 🌐 Website: [www.diegofontedev.com.br](https://www.diegofontedev.com.br)
-- 🏢 Empresa: [www.zowti.com](https://www.zowti.com)
+- 🌐 Website: [www.diegofontedev.com.br](https://www.diegofontedev.com.br) | [English](https://www.diegofontedev.com.br/index-en.html) | [Español](https://www.diegofontedev.com.br/index-es.html)
+- 🏢 Empresa: [www.zowti.com](https://www.zowti.com) | [English](https://www.zowti.com/en/index.html) | [Español](https://www.zowti.com/es/index.html)
 - 📧 Email: contato@diegofontedev.com.br
 
 ## 📄 Licença
