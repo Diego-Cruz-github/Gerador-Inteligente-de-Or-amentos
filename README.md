@@ -1,4 +1,4 @@
-# 🚀 Gerador Inteligente de Orçamentos - DEMO
+# Gerador Inteligente de Orçamentos - DEMO
 
 [![Flask](https://img.shields.io/badge/Flask-2.x-green.svg)](https://flask.palletsprojects.com/)
 [![Vue.js](https://img.shields.io/badge/Vue.js-3.x-brightgreen.svg)](https://vuejs.org/)
