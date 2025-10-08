@@ -133,6 +133,5 @@ gerador-orcamentos/
 ---
 
 **Diego Fonte**  
-Full Stack Developer | Cybersecurity & AI Focused
-
-Portfolio: <a href="https://diegofontedev.com.br/" target="_blank" rel="noopener">PT</a> | <a href="https://diegofontedev.com.br/index-en.html" target="_blank" rel="noopener">EN</a> | <a href="https://diegofontedev.com.br/index-es.html" target="_blank" rel="noopener">ES</a>
+Full Stack Developer | Cybersecurity & AI Focused  
+[Portfolio PT](https://diegofontedev.com.br/) | [EN](https://diegofontedev.com.br/index-en.html) | [ES](https://diegofontedev.com.br/index-es.html)
