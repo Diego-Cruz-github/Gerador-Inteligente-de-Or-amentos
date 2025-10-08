@@ -130,10 +130,6 @@ gerador-orcamentos/
 └── templates/              # Templates BI
 ```
 
-## 🔗 Projetos Relacionados
-
-- **[Chatbot Personalizado](https://github.com/Diego-Cruz-github/chatbot-personalizado-diversos)** - Sistema conversacional multi-persona
-
 ---
 
 **Diego Fonte**  
