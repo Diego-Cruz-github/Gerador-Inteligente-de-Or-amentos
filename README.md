@@ -1,4 +1,4 @@
-# 🚀 Gerador Inteligente de Orçamentos
+# Gerador Inteligente de Orçamentos
 
 [![Flask](https://img.shields.io/badge/Flask-2.x-green.svg)](https://flask.palletsprojects.com/)
 [![Vue.js](https://img.shields.io/badge/Vue.js-3.x-brightgreen.svg)](https://vuejs.org/)
@@ -132,7 +132,7 @@ gerador-orcamentos/
 
 ## 🔗 Projetos Relacionados
 
-- 🤖 **[Chatbot Personalizado](https://github.com/Diego-Cruz-github/chatbot-personalizado-diversos)** - Sistema conversacional multi-persona
+- **[Chatbot Personalizado](https://github.com/Diego-Cruz-github/chatbot-personalizado-diversos)** - Sistema conversacional multi-persona
 
 ---
 
