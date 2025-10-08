@@ -1,346 +1,141 @@
-# 🚀 Gerador Inteligente de Orçamentos - DEMO
+# 🚀 Gerador Inteligente de Orçamentos
 
 [![Flask](https://img.shields.io/badge/Flask-2.x-green.svg)](https://flask.palletsprojects.com/)
 [![Vue.js](https://img.shields.io/badge/Vue.js-3.x-brightgreen.svg)](https://vuejs.org/)
 [![SQLite](https://img.shields.io/badge/SQLite-3.x-lightblue.svg)](https://sqlite.org/)
 [![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://python.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.x-blue.svg)](https://tailwindcss.com/)
+[![Docker](https://img.shields.io/badge/Docker-20.x-blue.svg)](https://docker.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> **🚀 PROJETO DEMO** - Sistema conversacional inteligente que gera orçamentos profissionais através de chat com IA. A solução coleta requisitos via conversa natural e produz estimativas precisas baseadas em dados reais de mercado.
-
-## ⚡ DEMO - Projeto Conceito
-
-Este é um **projeto DEMO** que demonstra as possibilidades de sistemas conversacionais aplicados ao mundo dos negócios. O código é **100% editável** e pode ser adaptado para diversos tipos de projetos além de orçamentos.
-
-### 🎯 Por que este DEMO é Especial?
-
-- **Conversação Natural**: Chat inteligente que entende contexto e faz perguntas relevantes
-- **Frontend Totalmente Editável**: Modifique cores, layout, textos, funcionalidades
-- **BI Integrado**: Power BI e Google Data Studio com dashboards automáticos
-- **API Analytics**: Endpoints completos para integração com ferramentas empresariais
-- **Flexibilidade Total**: Adapte para qualquer tipo de consultoria ou serviço
-
-## 🎯 Conceito
-
-Sistema inovador que transforma conversas em orçamentos profissionais precisos. O usuário conversa com IA e recebe estimativas detalhadas em tempo real, simulando uma consultoria real.
-
-## 🎬 Demonstrações
-
-<details open>
-<summary><strong>⚡ Sistema de Orçamentos</strong> <em>(demonstração)</em></summary>
+Sistema conversacional inteligente que gera orçamentos profissionais através de chat com IA. Coleta requisitos via conversa natural e produz estimativas precisas baseadas em dados reais de mercado.
 
 ![Orçamento Rápido](Screenshots%20e%20vídeos/Orçamento-Rápido.gif)
+
+## 🎯 Conceito Técnico
+
+Sistema que transforma conversas em orçamentos profissionais precisos através de processamento de linguagem natural e algoritmos de precificação inteligente.
+
+## 🏗️ Arquitetura
+
+**Backend Python (Flask)**
+- API RESTful com endpoints especializados
+- Processamento de linguagem natural
+- Sistema de cálculo de preços dinâmico
+- Integração com OpenAI GPT para análise conversacional
+
+**Frontend Vue.js**
+- Interface responsiva com TailwindCSS
+- Chat em tempo real via WebSockets
+- Dashboard analítico com métricas
+- Geração de PDFs automatizada
+
+**Integração BI**
+- Conectores Power BI nativos
+- API Analytics para Google Data Studio
+- Dashboards em tempo real
+- Exportação de dados empresariais
+
+## 🎬 Demonstrações Principais
+
+<details open>
+<summary><strong>⚡ Sistema de Orçamentos</strong></summary>
+
 ![Orçamento Detalhado](Screenshots%20e%20vídeos/OrçamentoDetalhado.gif)
 
 </details>
 
 <details>
-<summary><strong>🚀 Funcionalidades Principais</strong> <em>(clique aqui para ver demonstração)</em></summary>
-
-![Funcionalidades](Screenshots%20e%20vídeos/funcionalidades.gif)
-![Funcionalidades 2](Screenshots%20e%20vídeos/Funcionalidades2.gif)
-
-</details>
-
-<details>
-<summary><strong>📊 Integração BI</strong> <em>(clique aqui para ver demonstração)</em></summary>
+<summary><strong>📊 Integração BI</strong></summary>
 
 ![Integração com Power BI](Screenshots%20e%20vídeos/integração-com-powerbi.gif)
-![Integração Data Studio Google](Screenshots%20e%20vídeos/IntegraçãoDataStudioGoogle.gif)
 
 </details>
-
-## 👨‍💻 Autor
-
-**Diego Fonte** - Desenvolvedor Full Stack | Consultor de Cyber Segurança e IA
-
-- 🌐 Website: [www.diegofontedev.com.br](https://www.diegofontedev.com.br)
-- 🏢 Empresa: [www.zowti.com](https://www.zowti.com)
-- 📧 Email: contato@diegofontedev.com.br
-
-## 🔥 Novas Funcionalidades Disponíveis
-
-### 📊 Integração Business Intelligence
-- **Dashboard em tempo real** com métricas atualizadas automaticamente
-- **Integração Power BI** e Google Data Studio com templates prontos
-- **API Analytics** para conectar com ferramentas de BI empresariais
-- **Preview de dados** com estatísticas dinâmicas
-
-### 🎛️ Interface Aprimorada
-- **Orçamento Rápido** com formulário inteligente e estatísticas em tempo real
-- **Dashboard Gerencial** com visão completa de todos os orçamentos
-- **Sistema de Status** para acompanhar trabalhos fechados vs pipeline
-- **Relatórios Automáticos** com exportação em PDF profissional
-
-### 🔗 Sistema Modular
-- **API RESTful** completa para integração com outros sistemas
-- **Frontend totalmente editável** - modifique interface, cores, textos
-- **Backend Python modular** - adapte lógica de negócio facilmente
-- **Banco de dados flexível** - SQLite para desenvolvimento, PostgreSQL para produção
 
 ## 🛠️ Stack Tecnológico
 
-- **Backend**: Flask + SQLite/PostgreSQL + SQLAlchemy
+- **Backend**: Flask + SQLAlchemy + OpenAI API
 - **Frontend**: Vue.js 3 + Vite + TailwindCSS  
-- **IA**: OpenAI GPT + Processamento de Linguagem Natural
-- **BI**: Power BI + Google Data Studio + API Analytics
-- **PDF**: jsPDF + Relatórios automatizados
-- **Deploy**: Docker + Docker Compose + Nginx
-- **Containerização**: Multi-stage builds otimizados para produção
+- **IA**: GPT + Processamento de Linguagem Natural
+- **BI**: Power BI + Google Data Studio
 - **Database**: SQLite (dev) / PostgreSQL (produção)
+- **Deploy**: Docker + Docker Compose
+- **PDF**: jsPDF + Relatórios automatizados
 
-## 🎨 Totalmente Personalizável
+## 🚀 Funcionalidades Técnicas
 
-### Frontend Editável
-```javascript
-// Cores, textos, layouts - tudo personalizável
-const themeConfig = {
-  primaryColor: '#667eea',
-  companyName: 'Sua Empresa',
-  logo: '/assets/seu-logo.png'
-}
-```
+### 💬 Sistema Conversacional
+- Parser de linguagem natural para extração de requisitos
+- Algoritmo de precificação baseado em contexto
+- Histórico de conversas com análise de padrões
+- Validação inteligente de dados de entrada
 
-### Adapte para Seu Negócio
-- **Consultoria Financeira**: Orçamentos de investimentos
-- **Agência de Marketing**: Campanhas publicitárias  
-- **Construção Civil**: Estimativas de obras
-- **Consultoria Jurídica**: Honorários advocatícios
-- **E muito mais...** - adapte a lógica para qualquer área!
+### 📊 Analytics Integrado
+- Métricas de conversão em tempo real
+- API RESTful para integração BI
+- Dashboard gerencial com KPIs
+- Relatórios automáticos em PDF
 
-## 🎨 Sistema Totalmente Personalizável
+### 🔧 Arquitetura Modular
+- Microserviços com responsabilidades específicas
+- API documentada para integrações externas
+- Sistema de plugins para novos tipos de orçamento
+- Containerização completa com Docker
 
-### 🔧 Exemplos de Adaptação para Outros Negócios
-- **Consultoria Financeira**: Orçamentos de investimentos e planejamento
-- **Agência de Marketing**: Campanhas publicitárias e estratégias digitais
-- **Construção Civil**: Estimativas de obras e reformas
-- **Consultoria Jurídica**: Honorários advocatícios e serviços legais
-- **Consultoria TI**: Projetos de software e infraestrutura
-- **E muito mais...** - adapte a lógica para qualquer área de consultoria!
+## 🐳 Deploy e Configuração
 
-## 🚀 Instalação Rápida
-
-### 🐳 Instalação com Docker (Recomendado)
-
-#### Pré-requisitos
-- Docker e Docker Compose instalados
-- Chave da API OpenAI
-
-#### 1. Clone e Configure
+### Instalação Rápida
 ```bash
-git clone https://github.com/seu-usuario/gerador-orcamentos.git
-cd gerador-orcamentos
+git clone https://github.com/Diego-Cruz-github/Gerador-Inteligente-de-Orcamentos.git
+cd Gerador-Inteligente-de-Orcamentos
 
-# Configure suas variáveis de ambiente
+# Configurar ambiente
 cp .env.example .env
-# Edite o .env e adicione sua OPENAI_API_KEY
-```
+# Adicionar OPENAI_API_KEY no .env
 
-#### 2. Execute com Docker
-```bash
-# Desenvolvimento (com hot reload)
-docker-compose -f docker-compose.dev.yml up --build
-
-# Produção
+# Deploy com Docker
 docker-compose up --build -d
-
-# Com PostgreSQL (produção completa)
-docker-compose --profile production up --build -d
 ```
 
-#### 3. Acesso
-- **Frontend**: http://localhost:3000 (produção) ou http://localhost:3001 (dev)
-- **API**: http://localhost:5000
-- **BI Integration**: http://localhost:3000/bi-integration
-
-#### 4. Comandos Úteis
-```bash
-# Ver logs
-docker-compose logs -f
-
-# Parar containers
-docker-compose down
-
-# Rebuild completo
-docker-compose down && docker-compose up --build
-```
-
-### 📋 Instalação Manual (Alternativa)
-
-#### Backend
-```bash
-cd backend
-pip install -r requirements.txt
-python app.py
-```
-
-#### Frontend  
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-#### Acesso Manual
+### Acesso
 - **Frontend**: http://localhost:3000
 - **API**: http://localhost:5000
 - **BI Integration**: http://localhost:3000/bi-integration
 
-## 📁 Estrutura do Projeto
+## 🔐 Segurança e Performance
+
+### Implementações de Segurança
+- Validação de entrada em todos os endpoints
+- CORS configurado para produção
+- Sanitização de dados do usuário
+- Logs de auditoria e monitoramento
+
+### Otimizações de Performance
+- Cache de consultas frequentes
+- Lazy loading no frontend
+- Compressão de assets
+- Database indexing otimizado
+
+## 📋 Estrutura do Projeto
 
 ```
 gerador-orcamentos/
 ├── backend/                 # API Flask
-│   ├── app.py              # Servidor principal
 │   ├── models/             # Modelos de dados
 │   ├── services/           # Lógica de negócio
-│   ├── routes/             # Endpoints da API
-│   └── requirements.txt    # Dependências Python
+│   └── routes/             # Endpoints da API
 ├── frontend/               # Interface Vue.js
-│   ├── src/
-│   │   ├── views/          # Páginas da aplicação
-│   │   ├── components/     # Componentes reutilizáveis
-│   │   ├── services/       # Conexão com API
-│   │   └── composables/    # Lógica reutilizável
-│   ├── public/
-│   └── package.json
-├── templates/              # Templates BI (Power BI)
-└── docs/                   # Documentação
+│   ├── src/views/          # Páginas da aplicação
+│   └── src/components/     # Componentes reutilizáveis
+└── templates/              # Templates BI
 ```
-
-## 🌟 Como Usar
-
-### 🎯 Acesso Rápido às Funcionalidades
-
-1. **🚀 Página Principal** - `http://localhost:3000`
-   - Dashboard com visão geral de todos os orçamentos
-   - Estatísticas em tempo real de conversão
-   - Acesso rápido a todas as funcionalidades
-
-2. **💬 Chat Conversacional** - `http://localhost:3000/chat`
-   - Sistema de IA que coleta requisitos via conversa natural
-   - Geração automática de orçamentos baseados na conversa
-   - Histórico completo de interações
-
-3. **⚡ Orçamento Rápido** - `http://localhost:3000/app`
-   - Formulário inteligente para orçamentos express
-   - Validação em tempo real e sugestões automáticas
-   - Geração instantânea de estimativas
-
-4. **🔍 Orçamento Detalhado** - `http://localhost:3000/detailed-app`
-   - Análise completa com pesquisa de mercado automática
-   - Comparação com concorrência em tempo real
-   - Relatórios profissionais em PDF
-
-5. **📊 BI Integration** - `http://localhost:3000/bi-integration`
-   - Dashboards interativos Power BI e Google Data Studio
-   - Métricas em tempo real de performance
-   - Exportação de dados para ferramentas corporativas
-
-6. **🔧 API Endpoints** - `http://localhost:5000/api`
-   - `/api/chat` - Conversação com IA
-   - `/api/quotes` - Gestão de orçamentos
-   - `/api/analytics` - Dados para BI
-   - `/api/dashboard` - Estatísticas gerais
-
-### 🛠️ Configuração Técnica
-
-1. **Configure Variáveis de Ambiente**:
-   ```bash
-   # Backend (.env)
-   OPENAI_API_KEY=sua_chave_aqui
-   FLASK_ENV=development
-   
-   # Frontend (opcional)
-   VITE_API_URL=http://localhost:5000
-   ```
-
-2. **Primeira Execução**:
-   - O banco SQLite é criado automaticamente
-   - As tabelas são inicializadas no primeiro acesso
-   - Dados de exemplo são populados para demonstração
-
-3. **Personalização Rápida**:
-   - Modifique cores em `frontend/src/style.css`
-   - Adapte textos em `frontend/src/views/`
-   - Configure preços em `backend/services/pricing_service.py`
-
-## 🔐 Segurança
-
-### Medidas Implementadas
-- ✅ Validação de entrada em todos os endpoints
-- ✅ CORS configurado adequadamente
-- ✅ Sanitização de dados do usuário
-- ✅ Rate limiting por IP (futuro)
-- ✅ Logs de segurança e auditoria
-- ✅ SQLite com prepared statements
-
-### Recomendações para Produção
-- Use HTTPS obrigatoriamente
-- Configure firewall adequadamente
-- Monitore logs de acesso
-- Mantenha dependências atualizadas
-- Configure backup automático do banco
-
-## 📝 Roadmap do Projeto
-
-### 🚀 Próximas Funcionalidades
-- [ ] **Sistema de Clientes**: Gestão completa de leads e conversões
-- [ ] **Templates de Orçamento**: Modelos personalizáveis por tipo de projeto
-- [ ] **Assinatura Digital**: Aprovação eletrônica de orçamentos
-- [ ] **CRM Integrado**: Funil de vendas completo
-- [ ] **Relatórios Avançados**: Analytics de performance e ROI
-
-### 🔧 Melhorias Técnicas
-- [ ] **Autenticação JWT**: Sistema completo de usuários e permissões
-- [ ] **Banco PostgreSQL**: Migração completa para produção
-- [ ] **Cache Redis**: Otimização de performance para consultas BI
-- [ ] **Webhooks**: Integração automática com sistemas externos
-- [ ] **API Rate Limiting**: Controle de uso e segurança avançada
-
-### 📱 Expansões
-- [ ] **App Mobile PWA**: Versão otimizada para dispositivos móveis
-- [ ] **Integração WhatsApp**: Envio automático de orçamentos
-- [ ] **Multi-idiomas**: Suporte para inglês e espanhol
-- [ ] **Marketplace**: Conexão com freelancers e fornecedores
-- [ ] **AI Avançada**: Análise preditiva de fechamento
-
-## ❓ FAQ
-
-**Q: Como configurar minha própria API de IA?**
-A: Edite o arquivo `backend/services/ai_service.py` e configure sua chave API.
-
-**Q: Posso personalizar os cálculos de preço?**
-A: Sim! Modifique o arquivo `backend/services/pricing_service.py` com sua lógica de negócio.
-
-**Q: Como adicionar novos tipos de serviços?**
-A: Edite os arquivos de configuração em `frontend/src/views/` e adicione na lógica do backend.
-
-**Q: É possível integrar com meu CRM existente?**
-A: Sim! Use os endpoints da API Analytics ou crie webhooks personalizados.
 
 ## 🔗 Projetos Relacionados
 
-Confira outros projetos DEMO similares:
-- 🤖 **[Chatbot Personalizado](https://github.com/Diego-Cruz-github/chatbot-personalizado-diversos)** - Sistema de chatbot multi-persona totalmente personalizável
-
-## 👨‍💻 Autor
-
-**Diego Fonte** - Desenvolvedor Full Stack | Consultor de Cyber Segurança e IA
-
-- 🌐 Website: [www.diegofontedev.com.br](https://www.diegofontedev.com.br)
-- 🏢 Empresa: [www.zowti.com](https://www.zowti.com)
-- 📧 Email: contato@diegofontedev.com.br
-
-## 📄 Licença
-
-Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE para detalhes.
+- 🤖 **[Chatbot Personalizado](https://github.com/Diego-Cruz-github/chatbot-personalizado-diversos)** - Sistema conversacional multi-persona
 
 ---
 
-### 🎯 Projeto DEMO Profissional
-
-Este é um **projeto de demonstração profissional** que showcases tecnologias modernas de desenvolvimento e IA aplicadas a sistemas conversacionais de negócios.
-
-**Ready for Production** | **BI Integrated** | **100% Customizable** | **Enterprise Ready**
+**Diego Fonte**  
+Full Stack Developer | AI & Cybersecurity Specialist  
+[Portfolio PT](https://diegofontedev.com.br/) | [EN](https://diegofontedev.com.br/index-en.html) | [ES](https://diegofontedev.com.br/index-es.html)
